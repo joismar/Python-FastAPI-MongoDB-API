@@ -34,7 +34,7 @@ class CreatePessoaModel(BaseModel):
             "example": {
                 "nome" : "Example",
                 "idade" : 42,
-                "cep" : "50830460"
+                "cep" : "15046250"
             }
         }
 
@@ -42,24 +42,16 @@ class UpdatePessoaModel(BaseModel):
 
     nome: Optional[str]
     idade: Optional[int]
-    endereco: Optional[EnderecoSchema]
+    cep: Optional[str]
 
     class Config:
         schema_extra = {
             "example": {
                 "nome" : "Example",
                 "idade" : 42,
-                "endereco" : {}
+                "cep" : "15046250"
             }
         }
-
-
-def ResponseModel(data, message):
-    return {
-        "data": [data],
-        "code": 200,
-        "message": message,
-    }
 
 
 def ErrorResponseModel(error, code, message):

@@ -32,11 +32,13 @@ async def update_pessoa(id: str, data: dict):
     return False
   pessoa = await pessoa_collection.find_one({"_id": ObjectId(id)})
   if pessoa:
+    pessoa_with_endereco = await parse_endereco_pessoa(data)
     updated_pessoa = await pessoa_collection.update_one(
-      {"_id": ObjectId(id)}, {"$set": data}
+      {"_id": ObjectId(id)}, {"$set": pessoa_with_endereco}
     )
     if updated_pessoa:
-        return True
+      pessoa = await pessoa_collection.find_one({"_id": ObjectId(id)})
+      return pessoa_helper(pessoa)
     return False
 
 
