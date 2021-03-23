@@ -4,6 +4,7 @@ from .routes.pessoa import router as PessoaRouter
 
 app = FastAPI()
 
+# Adiciona rotas
 app.include_router(EnderecoRouter, tags=["Endereco"], prefix="/endereco")
 app.include_router(PessoaRouter, tags=["Pessoa"], prefix="/pessoa")
 

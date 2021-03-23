@@ -1,16 +1,14 @@
 from typing import Optional
 from pydantic import BaseModel, Field
-from typing import List
 from .endereco import EnderecoSchema
-from bson.objectid import ObjectId
-
+from fastapi import HTTPException
 
 class PessoaSchema(BaseModel):
 
     id: str = Field(...)
     nome: str = Field(...)
     idade: int = Field(...)
-    endereco: EnderecoSchema
+    endereco: EnderecoSchema = {}
 
     class Config:
         schema_extra = {
@@ -54,5 +52,5 @@ class UpdatePessoaModel(BaseModel):
         }
 
 
-def ErrorResponseModel(error, code, message):
-    return {"error": error, "code": code, "message": message}
+def ErrorResponseModel(code, message):
+    raise HTTPException(status_code=code, detail=message)

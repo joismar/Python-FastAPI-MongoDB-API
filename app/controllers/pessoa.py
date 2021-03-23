@@ -1,6 +1,7 @@
 from bson.objectid import ObjectId
 from ..config.database import pessoa_collection
-from ..helpers.pessoa import pessoa_helper, parse_endereco_pessoa
+from ..helpers.pessoa import pessoa_helper
+from ..controllers.endereco import get_endereco
 
 # Retorna todas as pessoas
 async def get_all_pessoas():
@@ -12,8 +13,13 @@ async def get_all_pessoas():
 
 # Adiciona uma nova pessoa
 async def add_pessoa(pessoa_data: dict) -> dict:
-  pessoa_with_endereco = await parse_endereco_pessoa(pessoa_data)
-  pessoa = await pessoa_collection.insert_one(pessoa_with_endereco)
+  endereco = {}
+  if 'cep' in pessoa_data:
+    endereco = await get_endereco(pessoa_data['cep'])
+    if not endereco:
+      return 404
+    pessoa_data['endereco'] = endereco
+  pessoa = await pessoa_collection.insert_one(pessoa_data)
   new_pessoa = await pessoa_collection.find_one({"_id": pessoa.inserted_id})
   return pessoa_helper(new_pessoa)
 
@@ -32,9 +38,13 @@ async def update_pessoa(id: str, data: dict):
     return False
   pessoa = await pessoa_collection.find_one({"_id": ObjectId(id)})
   if pessoa:
-    pessoa_with_endereco = await parse_endereco_pessoa(data)
+    if 'cep' in data:
+      endereco = await get_endereco(data['cep'])
+      if not endereco:
+        return 404
+      data['endereco'] = endereco
     updated_pessoa = await pessoa_collection.update_one(
-      {"_id": ObjectId(id)}, {"$set": pessoa_with_endereco}
+      {"_id": ObjectId(id)}, {"$set": data}
     )
     if updated_pessoa:
       pessoa = await pessoa_collection.find_one({"_id": ObjectId(id)})

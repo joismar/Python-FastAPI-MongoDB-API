@@ -1,6 +1,5 @@
-from typing import Optional
 from pydantic import BaseModel, Field
-
+from fastapi import HTTPException
 
 class EnderecoSchema(BaseModel):
 
@@ -23,25 +22,22 @@ class EnderecoSchema(BaseModel):
             }
         }
 
-
-class UpdateEnderecoModel(BaseModel):
-
-    cep: Optional[str]
-    logr: Optional[str]
-    compl: Optional[str]
-    bairro: Optional[str]
-    cidade: Optional[str]
-    uf: Optional[str]
+class EnderecoResponseModel(BaseModel):
+    sucesso: bool
+    endereco: EnderecoSchema
 
     class Config:
         schema_extra = {
             "example": {
-                "cep" : "<cep>",
-                "logr" : "<logradouro>",
-                "compl" : "<complemento>",
-                "bairro" : "<bairro>",
-                "cidade" : "<cidade>",
-                "uf": "<uf>"
+                "sucesso": True,
+                "endereco": {
+                    "cep" : "<cep>",
+                    "logr" : "<logradouro>",
+                    "compl" : "<complemento>",
+                    "bairro" : "<bairro>",
+                    "cidade" : "<cidade>",
+                    "uf": "<uf>"
+                }
             }
         }
 
@@ -49,9 +45,9 @@ class UpdateEnderecoModel(BaseModel):
 def ResponseModel(data):
     return {
         "sucesso": True,
-        "endereco": [data]
+        "endereco": data
     }
     
 
-def ErrorResponseModel(error, code, message):
-    return {"error": error, "code": code, "message": message}
+def ErrorResponseModel(code, message):
+    raise HTTPException(status_code=code, detail=message)

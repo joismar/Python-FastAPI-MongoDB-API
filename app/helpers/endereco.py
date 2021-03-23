@@ -1,3 +1,4 @@
+# Faz um parser no objeto Endereco
 def endereco_helper(endereco) -> dict:
 	return {
 		"cep": endereco["cep"],
@@ -8,6 +9,7 @@ def endereco_helper(endereco) -> dict:
 		"uf": endereco["uf"],
 	}
 
+# Faz um aprser no objeto de resposta
 def parse_response(res) -> dict:
 	return {
 		"cep": res["cep"].replace('-', ''),

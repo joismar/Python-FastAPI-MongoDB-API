@@ -64,12 +64,29 @@ Antes de começar :checkered_flag:, você precisa ter o [Git](https://git-scm.co
 
 ## :checkered_flag: Começando ##
 
+#### Primeiro...
 ```bash
 # Clone este repositório
 $ git clone https://github.com/joismar/python-fastapi-mongodb-api
 
 # Entre na pasta
 $ cd python-fastapi-mongodb-api
+
+# Crie a pasta do mongodb para usar com docker (somente se não tiver instalado localmente)
+$ mkdir mongodb/database
+```
+#### Rodando... (com docker)
+Descomente as linhas correspondentes a API no arquivo docker-compose.yml
+```bash
+# Execute o comando abaixo e... Pronto!
+$ docker-compose up -d
+
+# O app vai inicializar em <http://localhost:8080>
+```
+#### Rodando... (com dependency manager)
+```bash
+# Subir mongodb no docker
+$ docker-compose up -d
 
 # Instale as dependências (com poetry)
 $ poetry install
@@ -83,7 +100,8 @@ $ > uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
 
 # O app vai inicializar em <http://localhost:8080>
 ```
-
+#### Testando a API
+Abra http://localhost:8080/docs em seu navegador e realize os testes 😁/
 ## :memo: Licença ##
 
 Este projeto está sob licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para mais detalhes.

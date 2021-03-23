@@ -12,7 +12,13 @@ services:
     ports:
       - 27017:27017
     restart: unless-stopped
+    networks:
+      new:
+        aliases:
+          - mongo
 
+  # DESCOMENTE ESSA LINHA CASO QUEIRA RODAR A API TAMBÉM NO DOCKER
+  
   # api:
   #   container_name: api
   #   image: api
@@ -21,5 +27,8 @@ services:
   #     context: .
   #   ports:
   #     - 8080:8080
+  #   networks:
+  #     - new
 
-
+networks:
+  new:  

@@ -24,6 +24,9 @@ router = APIRouter()
 async def add_pessoa_data(pessoa: CreatePessoaModel = Body(...)):
   pessoa = jsonable_encoder(pessoa)
   new_pessoa = await add_pessoa(pessoa)
+  print(new_pessoa)
+  if new_pessoa == 404: 
+    return ErrorResponseModel(404, "Ocorreu um erro! Tente novamente com um CEP correto.")
   return new_pessoa
 
 
@@ -40,7 +43,7 @@ async def get_pessoa_data(id):
   pessoa = await get_pessoa(id)
   if pessoa:
     return pessoa
-  return ErrorResponseModel("Ocorreu um erro.", 404, "A pessoa não existe.")
+  return ErrorResponseModel(404, "A pessoa não existe.")
 
 
 @router.delete("/{id}", response_description="Pessoa deletada do banco de dados")
@@ -48,16 +51,15 @@ async def delete_pessoa_data(id: str):
   deleted_pessoa = await delete_pessoa(id)
   if deleted_pessoa:
     return {"Pessoa com id {} deletada com sucesso!".format(id)}
-  return ErrorResponseModel(
-    "Ocorreu um erro", 404, "Pessoa com o id {} não existe".format(id)
-  )
+  return ErrorResponseModel(404, "Pessoa com o id {} não existe".format(id))
 
 
 @router.put("/{id}", response_model=PessoaSchema)
 async def update_pessoa_data(id: str, req: UpdatePessoaModel = Body(...)):
   req = {k: v for k, v in req.dict().items() if v is not None}
   updated_pessoa = await update_pessoa(id, req)
+  if updated_pessoa == 404: 
+    return ErrorResponseModel(404, "Ocorreu um erro! Tente novamente com um CEP correto.")
   if updated_pessoa:
     return updated_pessoa
-  return ErrorResponseModel("Ocorreu um erro", 404, "Ocorreu algum erro ao tentar ",
-  )
+  return ErrorResponseModel(404, "Ocorreu algum erro ao tentar ")

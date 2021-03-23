@@ -8,14 +8,17 @@ from ..controllers.endereco import (
 from ..models.endereco import (
     ErrorResponseModel,
 	ResponseModel,
+    EnderecoResponseModel
 )
 
 router = APIRouter()
 
-@router.get("/{cep}", response_description="CEP Recebido!")
+# Recebe um CEP e retorna um endereço
+@router.get("/{cep}", response_description="CEP Recebido", response_model=EnderecoResponseModel)
 async def get_endereco_data(cep):
-    endereco = await get_endereco(cep)
-    if endereco:
-        return ResponseModel(endereco)
-    return ErrorResponseModel("An error occurred.", 404, "Cep inválido.")
+    if cep:
+        endereco = await get_endereco(cep)
+        if endereco:
+            return ResponseModel(endereco)
+    return ErrorResponseModel(404, "Ocorreu um erro, talvez este CEP esteja inválido.")
 
