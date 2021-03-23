@@ -3,7 +3,7 @@ from ..config.database import pessoa_collection
 from ..helpers.pessoa import pessoa_helper, parse_endereco_pessoa
 
 # Retorna todas as pessoas
-async def get_pessoas():
+async def get_all_pessoas():
   pessoas = []
   async for pessoa in pessoa_collection.find():
     pessoas.append(pessoa_helper(pessoa))

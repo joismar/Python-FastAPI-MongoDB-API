@@ -2,10 +2,12 @@ from typing import Optional
 from pydantic import BaseModel, Field
 from typing import List
 from .endereco import EnderecoSchema
+from bson.objectid import ObjectId
 
 
 class PessoaSchema(BaseModel):
 
+    id: str = Field(...)
     nome: str = Field(...)
     idade: int = Field(...)
     endereco: EnderecoSchema
@@ -13,6 +15,7 @@ class PessoaSchema(BaseModel):
     class Config:
         schema_extra = {
             "example": {
+                "id" : "hash",
                 "nome" : "Example",
                 "idade" : 42,
                 "endereco" : {}
@@ -57,28 +60,6 @@ def ResponseModel(data, message):
         "code": 200,
         "message": message,
     }
-
-
-class PessoaResponseModel(BaseModel):
-
-    data: List[PessoaSchema]
-    code: int = Field(...)
-    message: str = Field(...)
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "data": [
-                    {
-                        "nome" : "Example",
-                        "idade" : 42,
-                        "endereco" : {}
-                    }
-                ],
-                "code": 200,
-                "message": "Success!",
-            }
-        }
 
 
 def ErrorResponseModel(error, code, message):
