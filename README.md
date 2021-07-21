@@ -45,7 +45,7 @@ O projeto a seguir implementa uma API em Python com uso de FastAPI e MongoDB com
 :heavy_check_mark: API de consultar CEP, onde dado um CEP retornará os dados de endereço a partir de uma API pública;\
 :heavy_check_mark: CRUD de uma entidade Pessoa integrada a API de CEP;\
 :heavy_check_mark: Persistência dos dados em MongoDB;\
-:heavy_check_mark: Documentação automática em SwaggerUI seguindo os padrões do FastAPI;
+:heavy_check_mark: Documentação automática em SwaggerUI seguindo os padrões do FastAPI;\
 :heavy_check_mark: Containerização para fast deploy.
 
 ## :rocket: Dependências ##
